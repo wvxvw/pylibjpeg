@@ -57,3 +57,6 @@ pydicom/.mypy_cache/*
 
 # vscode
 .vscode/*
+.venv/
+/conda-pkg/bld.bat
+/conda-pkg/meta.yaml

@@ -2,7 +2,7 @@ name: build
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, wvxvw/conda-build ]
   pull_request:
 
 jobs:
@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.6, 3.7, 3.8, 3.9]
+        python-version: [3.7, 3.8, 3.9]
 
     steps:
     - uses: actions/checkout@v2
@@ -65,3 +65,13 @@ jobs:
         0 https://codecov.io/bash) || (sleep 30 && bash <(curl \
         --connect-timeout 10 --retry 10 --retry-max-time \
         0 https://codecov.io/bash))
+
+    - run: python ./setup.py bdist_egg
+    - run: python ./scripts/gen-conda-recipe.py
+    - name: Build conda package
+      uses: s-weigand/setup-conda@v1
+      with:
+        conda-channels: wvxvw
+        python-version: ${{ matrix.python-version }}
+    - run: conda install conda-build
+    - run: conda build -c wvxvw -c anaconda ./conda-pkg/
