@@ -46,6 +46,7 @@ jobs:
       matrix:
         python-version: [3.7, 3.8, 3.9]
     name: Build and package for Conda
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
       with:
